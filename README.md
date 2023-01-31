@@ -29,6 +29,7 @@ This template can be used to quickly create an [Apollo Federation] subgraph with
   - `PRODUCTION_URL`: The URL of the deployed subgraph that the supergraph gateway will route to.
 - Remove the if: false lines from .github/workflows/checks.yaml and .github/workflows/deploy.yaml to enable schema checks and publishing.
 - Write your custom deploy logic in `.github/workflows/deploy.yaml`.
+- Send the Router-Authorization header [from your Cloud router](https://www.apollographql.com/docs/graphos/routing/cloud-configuration#managing-secrets) and set the ROUTER_SECRET environment variable wherever you deploy this to.
 
 [apollo federation]: https://www.apollographql.com/docs/federation/
 [@apollo/server]: https://www.apollographql.com/docs/apollo-server/
