@@ -34,7 +34,7 @@ async function main() {
   });
 
   console.log(`🚀  Subgraph ${subgraphName} ready at ${url}`);
-  console.log(`Run 'rover dev --url ${url} --name ${subgraphName}`);
+  console.log(`Run rover dev --url ${url} --name ${subgraphName}`);
 }
 
 main();
