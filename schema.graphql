@@ -15,6 +15,12 @@ extend schema
     url: "https://myteam.slack.com/archives/teams-chat-room-url"
     description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
   )
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.2",
+    import: [
+      "@key", "@extends", "@shareable", "@inaccessible", "@override", "@external", "@provides", "@requires", "@tag", "@composeDirective"
+    ]
+  )
 
 type Query {
   thing(id: ID!): Thing
