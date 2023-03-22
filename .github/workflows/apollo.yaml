@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: get_subgraph_name 
-        run: echo "::set-output name=name::$(cat package.json | grep "name" | cut -d':' -f 2 | cut -d'"' -f 2)"
+        run: echo "name=$(cat package.json | grep "name" | cut -d':' -f 2 | cut -d'"' -f 2)" >> $GITHUB_OUTPUT
     outputs:
       name: ${{ steps.get_subgraph_name.outputs.name }}
