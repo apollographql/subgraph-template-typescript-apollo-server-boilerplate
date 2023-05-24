@@ -20,5 +20,6 @@
     "paths": {
       "*": ["types/*"]
     }
-  }
+  },
+  "exclude": ["codegen.ts"]
 }
