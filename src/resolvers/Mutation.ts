@@ -1,8 +1,8 @@
-import { Resolvers } from "../__generated__/resolvers-types";
+import { Resolvers, Thing } from "../__generated__/resolvers-types";
 export const Mutation: Resolvers = {
   Mutation: {
     createThing(_parent, { thing }, _context) {
-      return { ...thing };
+      return { ...thing as Thing };
     },
   },
 };

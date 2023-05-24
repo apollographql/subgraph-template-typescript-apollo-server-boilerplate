@@ -32,9 +32,9 @@
     "graphql-tag": "latest"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^3.0.0",
-    "@graphql-codegen/typescript": "^3.0.0",
-    "@graphql-codegen/typescript-resolvers": "^3.0.0",
+    "@graphql-codegen/cli": "^4.0.0",
+    "@graphql-codegen/typescript": "^4.0.0",
+    "@graphql-codegen/typescript-resolvers": "^4.0.0",
     "@types/jest": "^29.0.3",
     "@types/node": "^18.7.23",
     "jest": "^29.0.3",
