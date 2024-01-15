@@ -1,16 +1,16 @@
 {
-  "name": "subgraph-template-typescript-apollo-server",
+  "name": "credit-cloud",
   "private": true,
-  "description": "A template for TypeScript projects with pre-configured tooling",
+  "description": "Apollo server for credit cloud",
   "version": "0.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/apollographql/subgraph-template-typescript-apollo-server"
+    "url": "https://github.com/shottah/credit-cloud-server"
   },
-  "homepage": "https://github.com/apollographql/subgraph-template-typescript-apollo-server#readme",
+  "homepage": "https://github.com/shottah/credit-cloud-server#readme",
   "bugs": {
-    "url": "https://github.com/apollographql/subgraph-template-typescript-apollo-server/issues"
+    "url": "https://github.com/shottah/credit-cloud-server/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
