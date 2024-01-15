@@ -37,3 +37,11 @@ This template can be used to quickly create an [Apollo Federation] subgraph with
 [rover]: https://www.apollographql.com/docs/rover/
 [nodemon]: https://www.npmjs.com/package/nodemon
 [GraphQL Code Generator]: https://www.the-guild.dev/graphql/codegen
+
+## Deploying
+
+For Authenticating to Artifact Registry [Read More](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#auth) this is only needed by accounts that build images and upload them to Google Cloud Platform.
+
+For Deploying to GCP Cloud Run [Read More](https://cloud.google.com/run/docs/deploying) this is only needed by accounts that deploy hosted images on Google Cloud Platform to be run in Cloud Run.
+
+
