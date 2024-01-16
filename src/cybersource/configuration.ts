@@ -1,6 +1,6 @@
-require("dotenv").config();
+require('dotenv').config();
 // Constructor for Configuration
-function Configuration() {
+export default function Configuration() {
   var configObj = {
     authenticationType: process.env.AuthenticationType,
     runEnvironment: process.env.RunEnvironment,
@@ -22,11 +22,9 @@ function Configuration() {
       logFileName: process.env.LogFileName,
       logDirectory: process.env.LogDirectory,
       logFileMaxSize: process.env.LogfileMaxSize,
-      loggingLevel: "debug",
+      loggingLevel: 'debug',
       enableMasking: process.env.EnableMasking,
     },
   };
   return configObj;
 }
-
-module.exports = Configuration;

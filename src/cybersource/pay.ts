@@ -1,16 +1,9 @@
-"use strict";
+import { ProcessPaymentArgs } from '../resolvers/args';
 
-var cybersourceRestApi = require("cybersource-rest-client");
-const getFields = require("./getFields");
-const Configuration = require("../../../data/Configuration");
+const cybersourceRestApi = require('cybersource-rest-client');
+const configuration = require('./configuration');
 
-function simple_authorization_internet(
-  body,
-  res,
-  next,
-  callback,
-  enable_capture
-) {
+function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
   try {
     const {
       firstName,
@@ -21,20 +14,20 @@ function simple_authorization_internet(
       amount,
       email,
       phoneNumber,
-    } = getFields(body, res);
+    } = processPaymentArgs;
 
-    var configObject = new Configuration();
+    var configObject = new configuration();
     var apiClient = new cybersourceRestApi.ApiClient();
     var requestObj = new cybersourceRestApi.CreatePaymentRequest();
 
     var clientReferenceInformation =
       new cybersourceRestApi.Ptsv2paymentsClientReferenceInformation();
-    clientReferenceInformation.code = "TC50171_3";
+    clientReferenceInformation.code = 'TC50171_3';
     requestObj.clientReferenceInformation = clientReferenceInformation;
 
     var processingInformation =
       new cybersourceRestApi.Ptsv2paymentsProcessingInformation();
-    processingInformation.capture = enable_capture === true;
+    processingInformation.capture = true;
     requestObj.processingInformation = processingInformation;
 
     var paymentInformation =
@@ -53,18 +46,18 @@ function simple_authorization_internet(
     var orderInformationAmountDetails =
       new cybersourceRestApi.Ptsv2paymentsOrderInformationAmountDetails();
     orderInformationAmountDetails.totalAmount = amount;
-    orderInformationAmountDetails.currency = "USD";
+    orderInformationAmountDetails.currency = 'USD';
     orderInformation.amountDetails = orderInformationAmountDetails;
 
     var orderInformationBillTo =
       new cybersourceRestApi.Ptsv2paymentsOrderInformationBillTo();
     orderInformationBillTo.firstName = firstName;
     orderInformationBillTo.lastName = lastName;
-    orderInformationBillTo.address1 = "1 Market St";
-    orderInformationBillTo.locality = "san francisco";
-    orderInformationBillTo.administrativeArea = "CA";
-    orderInformationBillTo.postalCode = "94105";
-    orderInformationBillTo.country = "US";
+    orderInformationBillTo.address1 = '1 Market St';
+    orderInformationBillTo.locality = 'san francisco';
+    orderInformationBillTo.administrativeArea = 'CA';
+    orderInformationBillTo.postalCode = '94105';
+    orderInformationBillTo.country = 'US';
     orderInformationBillTo.email = email;
     orderInformationBillTo.phoneNumber = phoneNumber;
     orderInformation.billTo = orderInformationBillTo;
@@ -73,31 +66,27 @@ function simple_authorization_internet(
 
     var instance = new cybersourceRestApi.PaymentsApi(configObject, apiClient);
 
-    instance.createPayment(requestObj, function (error, data, response) {
-      if (error) {
-        console.error("Error : ", error);
-        return next("Error processing payment: " + error.message);
-      } else if (data) {
-        console.log("Data : ", data);
+    instance.createPayment(
+      requestObj,
+      function (error: any, data: any, response: any) {
+        if (error) {
+          console.error('Error : ', error);
+          throw new Error('Error processing payment: ' + error.message);
+        } else if (data) {
+          console.log('Data : ', data);
+          console.log('Response : ', response);
+          console.log(
+            'Response Code of Process a Payment : ',
+            response ? response['status'] : 'No response status'
+          );
+          return response;
+        }
       }
-
-      console.log("Response : ", response);
-      console.log(
-        "Response Code of Process a Payment : ",
-        response ? response["status"] : "No response status"
-      );
-
-      callback(error, data, response);
-    });
+    );
   } catch (error) {
-    console.error("\nException on calling the API : " + error);
-    return next(error);
+    console.error('\nException on calling the API : ' + error);
+    throw new Error(error);
   }
 }
 
-// function write_log_audit(status) {
-//   var filename = path.basename(__filename).split(".")[0];
-//   console.log(`[Sample Code Testing] [${filename}] ${status}`);
-// }
-
-module.exports = simple_authorization_internet;
+export default processNetAuthorizedPayment;

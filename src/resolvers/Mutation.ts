@@ -1,8 +1,11 @@
-import { Resolvers, Thing } from '../__generated__/resolvers-types';
+import { Resolvers } from '../__generated__/resolvers-types';
+import { ProcessPaymentArgs } from './args';
+import processNetAuthorizedPayment from '../cybersource/pay';
+
 export const Mutation: Resolvers = {
   Mutation: {
-    createThing(_parent, { thing }, _context) {
-      return { ...(thing as Thing) };
+    processPayment(_: any, args: ProcessPaymentArgs, __: any) {
+      return processNetAuthorizedPayment(args);
     },
   },
 };
