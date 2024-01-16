@@ -26,7 +26,9 @@
   },
   "dependencies": {
     "@apollo/server": "^4.3.3",
-    "@apollo/subgraph": "^2.3.1",
+    "@apollo/subgraph": "^2.6.3",
+    "cybersource-rest-client": "^0.0.52",
+    "dotenv": "^16.3.1",
     "graphql": "latest",
     "graphql-tag": "latest"
   },

@@ -1,27 +1,29 @@
-import { readFileSync } from "fs";
-import gql from "graphql-tag";
-import { buildSubgraphSchema } from "@apollo/subgraph";
-import { ApolloServer, ContextFunction } from "@apollo/server";
+import { readFileSync } from 'fs';
+import gql from 'graphql-tag';
+import { buildSubgraphSchema } from '@apollo/subgraph';
+import { ApolloServer, ContextFunction } from '@apollo/server';
 import {
   StandaloneServerContextFunctionArgument,
   startStandaloneServer,
-} from "@apollo/server/standalone";
-import resolvers from "./resolvers";
-import { DataSourceContext } from "./types/DataSourceContext";
-import { GraphQLError } from "graphql";
+} from '@apollo/server/standalone';
+import resolvers from './resolvers';
+import { DataSourceContext } from './types/DataSourceContext';
+import { GraphQLError } from 'graphql';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const port = process.env.PORT ?? "4001";
-const subgraphName = require("../package.json").name;
+const port = process.env.PORT ?? '4001';
+const subgraphName = require('../package.json').name;
 const routerSecret = process.env.ROUTER_SECRET;
 
 const context: ContextFunction<
   [StandaloneServerContextFunctionArgument],
   DataSourceContext
 > = async ({ req }) => {
-  if (routerSecret && req.headers["router-authorization"] !== routerSecret) {
-    throw new GraphQLError("Missing router authentication", {
+  if (routerSecret && req.headers['router-authorization'] !== routerSecret) {
+    throw new GraphQLError('Missing router authentication', {
       extensions: {
-        code: "UNAUTHENTICATED",
+        code: 'UNAUTHENTICATED',
         http: { status: 401 },
       },
     });
@@ -34,8 +36,8 @@ const context: ContextFunction<
 
 async function main() {
   let typeDefs = gql(
-    readFileSync("schema.graphql", {
-      encoding: "utf-8",
+    readFileSync('schema.graphql', {
+      encoding: 'utf-8',
     })
   );
   const server = new ApolloServer({
