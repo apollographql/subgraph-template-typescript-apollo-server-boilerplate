@@ -18,6 +18,14 @@ export type Scalars = {
   _FieldSet: { input: any; output: any; }
 };
 
+export type BillingAddress = {
+  address1: Scalars['String']['input'];
+  administrativeArea: Scalars['String']['input'];
+  country: Scalars['String']['input'];
+  locality: Scalars['String']['input'];
+  postalCode: Scalars['String']['input'];
+};
+
 export type CreateThing = {
   id: Scalars['ID']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
@@ -26,11 +34,35 @@ export type CreateThing = {
 export type Mutation = {
   __typename?: 'Mutation';
   createThing?: Maybe<Thing>;
+  processPayment?: Maybe<ProcessPaymentResult>;
 };
 
 
 export type MutationCreateThingArgs = {
   thing: CreateThing;
+};
+
+
+export type MutationProcessPaymentArgs = {
+  args: ProcessPaymentArgs;
+};
+
+export type ProcessPaymentArgs = {
+  address: BillingAddress;
+  amount: Scalars['Int']['input'];
+  cardExpiryMonth: Scalars['Int']['input'];
+  cardExpiryYear: Scalars['Int']['input'];
+  cardNumber: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+};
+
+export type ProcessPaymentResult = {
+  __typename?: 'ProcessPaymentResult';
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type Query = {
@@ -132,24 +164,32 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  BillingAddress: BillingAddress;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   CreateThing: CreateThing;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  ProcessPaymentArgs: ProcessPaymentArgs;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  ProcessPaymentResult: ResolverTypeWrapper<ProcessPaymentResult>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Query: ResolverTypeWrapper<{}>;
   Thing: ResolverTypeWrapper<Thing>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  BillingAddress: BillingAddress;
+  String: Scalars['String']['output'];
   CreateThing: CreateThing;
   ID: Scalars['ID']['output'];
-  String: Scalars['String']['output'];
   Mutation: {};
+  ProcessPaymentArgs: ProcessPaymentArgs;
+  Int: Scalars['Int']['output'];
+  ProcessPaymentResult: ProcessPaymentResult;
+  Boolean: Scalars['Boolean']['output'];
   Query: {};
   Thing: Thing;
-  Boolean: Scalars['Boolean']['output'];
 }>;
 
 export type ContactDirectiveArgs = {
@@ -162,6 +202,13 @@ export type ContactDirectiveResolver<Result, Parent, ContextType = DataSourceCon
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createThing?: Resolver<Maybe<ResolversTypes['Thing']>, ParentType, ContextType, RequireFields<MutationCreateThingArgs, 'thing'>>;
+  processPayment?: Resolver<Maybe<ResolversTypes['ProcessPaymentResult']>, ParentType, ContextType, RequireFields<MutationProcessPaymentArgs, 'args'>>;
+}>;
+
+export type ProcessPaymentResultResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['ProcessPaymentResult'] = ResolversParentTypes['ProcessPaymentResult']> = ResolversObject<{
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
@@ -177,6 +224,7 @@ export type ThingResolvers<ContextType = DataSourceContext, ParentType extends R
 
 export type Resolvers<ContextType = DataSourceContext> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
+  ProcessPaymentResult?: ProcessPaymentResultResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Thing?: ThingResolvers<ContextType>;
 }>;

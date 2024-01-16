@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { readFileSync } from 'fs';
 import gql from 'graphql-tag';
 import { buildSubgraphSchema } from '@apollo/subgraph';
@@ -9,8 +10,6 @@ import {
 import resolvers from './resolvers';
 import { DataSourceContext } from './types/DataSourceContext';
 import { GraphQLError } from 'graphql';
-import dotenv from 'dotenv';
-dotenv.config();
 
 const port = process.env.PORT ?? '4001';
 const subgraphName = require('../package.json').name;

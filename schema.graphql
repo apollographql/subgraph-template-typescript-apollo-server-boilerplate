@@ -16,10 +16,19 @@ extend schema
     description: "send urgent issues to [#oncall](https://yourteam.slack.com/archives/oncall)."
   )
   @link(
-    url: "https://specs.apollo.dev/federation/v2.3",
+    url: "https://specs.apollo.dev/federation/v2.3"
     import: [
-      "@key", "@extends", "@shareable", "@inaccessible", "@override", "@external", "@provides", "@requires", "@tag",
-      "@composeDirective", "@interfaceObject"
+      "@key"
+      "@extends"
+      "@shareable"
+      "@inaccessible"
+      "@override"
+      "@external"
+      "@provides"
+      "@requires"
+      "@tag"
+      "@composeDirective"
+      "@interfaceObject"
     ]
   )
 
@@ -29,6 +38,32 @@ type Query {
 
 type Mutation {
   createThing(thing: CreateThing!): Thing
+  processPayment(args: ProcessPaymentArgs!): ProcessPaymentResult
+}
+
+type ProcessPaymentResult {
+  success: Boolean!
+  message: String
+}
+
+input ProcessPaymentArgs {
+  firstName: String!
+  lastName: String!
+  cardNumber: String!
+  cardExpiryMonth: Int!
+  cardExpiryYear: Int!
+  amount: Int!
+  email: String!
+  phoneNumber: String!
+  address: BillingAddress!
+}
+
+input BillingAddress {
+  address1: String!
+  locality: String!
+  administrativeArea: String!
+  postalCode: String!
+  country: String!
 }
 
 type Thing @key(fields: "id") {

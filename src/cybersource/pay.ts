@@ -1,10 +1,12 @@
-import { ProcessPaymentArgs } from '../resolvers/args';
-
+import { MutationProcessPaymentArgs } from '../__generated__/resolvers-types';
 const cybersourceRestApi = require('cybersource-rest-client');
 const configuration = require('./configuration');
 
-function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
+function processNetAuthorizedPayment(
+  processPaymentArgs: MutationProcessPaymentArgs
+) {
   try {
+    const { args } = processPaymentArgs;
     const {
       firstName,
       lastName,
@@ -14,9 +16,25 @@ function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
       amount,
       email,
       phoneNumber,
-    } = processPaymentArgs;
+      address: { address1, locality, postalCode, administrativeArea, country },
+    } = args;
 
-    var configObject = new configuration();
+    var configObject = {
+      authenticationType: process.env.AuthenticationType,
+      runEnvironment: process.env.RunEnvironment,
+      merchantID: process.env.MerchantId,
+      merchantKeyId: process.env.MerchantKeyId,
+      merchantsecretKey: process.env.MerchantSecretKey,
+      keyAlias: process.env.KeyAlias,
+      keyPass: process.env.KeyPass,
+      keyFileName: process.env.KeyFileName,
+      keysDirectory: process.env.KeysDirectory,
+      useMetaKey: process.env.UseMetaKey,
+      portfolioID: process.env.PortfolioID,
+      logConfiguration: {
+        enableLog: false,
+      },
+    };
     var apiClient = new cybersourceRestApi.ApiClient();
     var requestObj = new cybersourceRestApi.CreatePaymentRequest();
 
@@ -53,11 +71,11 @@ function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
       new cybersourceRestApi.Ptsv2paymentsOrderInformationBillTo();
     orderInformationBillTo.firstName = firstName;
     orderInformationBillTo.lastName = lastName;
-    orderInformationBillTo.address1 = '1 Market St';
-    orderInformationBillTo.locality = 'san francisco';
-    orderInformationBillTo.administrativeArea = 'CA';
-    orderInformationBillTo.postalCode = '94105';
-    orderInformationBillTo.country = 'US';
+    orderInformationBillTo.address1 = address1;
+    orderInformationBillTo.locality = locality;
+    orderInformationBillTo.administrativeArea = administrativeArea;
+    orderInformationBillTo.postalCode = postalCode;
+    orderInformationBillTo.country = country;
     orderInformationBillTo.email = email;
     orderInformationBillTo.phoneNumber = phoneNumber;
     orderInformation.billTo = orderInformationBillTo;
@@ -66,7 +84,7 @@ function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
 
     var instance = new cybersourceRestApi.PaymentsApi(configObject, apiClient);
 
-    instance.createPayment(
+    return instance.createPayment(
       requestObj,
       function (error: any, data: any, response: any) {
         if (error) {
@@ -85,7 +103,7 @@ function processNetAuthorizedPayment(processPaymentArgs: ProcessPaymentArgs) {
     );
   } catch (error) {
     console.error('\nException on calling the API : ' + error);
-    throw new Error(error);
+    throw new Error('Error processing payment: ' + error.message);
   }
 }
 
