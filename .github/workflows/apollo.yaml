@@ -11,7 +11,7 @@ jobs:
     name: Introspect package.json to get subgraph name
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@1d96c772d19495a3b5c517cd2bc0cb401ea0529f # v4
       - id: get_subgraph_name 
         run: echo "name=$(cat package.json | grep "name" | cut -d':' -f 2 | cut -d'"' -f 2)" >> $GITHUB_OUTPUT
     outputs:
