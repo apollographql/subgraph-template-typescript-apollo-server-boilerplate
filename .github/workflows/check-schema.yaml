@@ -1,5 +1,8 @@
 name: Tests and Checks
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   get_subgraph_name:
@@ -34,3 +37,24 @@ jobs:
         run: npm install
       - name: Test
         run: npm run test
+  compose:
+    name: Composition Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Install Rover
+        run: |
+          curl -sSL https://rover.apollo.dev/nix/latest | sh
+          echo "$HOME/.rover/bin" >> $GITHUB_PATH
+      - name: Create supergraph config
+        run: |
+          cat > /tmp/supergraph.yaml << 'HEREDOC'
+          federation_version: =2.10.0
+          subgraphs:
+            template:
+              routing_url: http://localhost:4001
+              schema:
+                file: ./schema.graphql
+          HEREDOC
+      - name: Compose
+        run: rover supergraph compose --config /tmp/supergraph.yaml
